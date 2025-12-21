@@ -6,16 +6,59 @@ const router = Router();
 
 /**
  * @swagger
- * /api/random: ... (rest of the file is unchanged)
+ * /api/random:
+ *   get:
+ *     summary: Get a random value based on type or topic
+ *     description: Returns a random integer, GUID, string, or a string generated from a topic.
+ *     parameters:
+ *       - in: query
+ *         name: type
+ *         schema: 
+ *           type: string
+ *           enum: [integer, guid, string]
+ *         description: The type of random value to generate.
+ *       - in: query
+ *         name: min
+ *         schema: { type: integer }
+ *         description: Minimum value for integer generation.
+ *       - in: query
+ *         name: max
+ *         schema: { type: integer }
+ *         description: Maximum value for integer generation.
+ *       - in: query
+ *         name: len
+ *         schema: { type: integer }
+ *         description: Length of the string to generate.
+ *       - in: query
+ *         name: special
+ *         schema: { type: boolean }
+ *         description: Whether to include special characters in the string.
+ *       - in: query
+ *         name: topic
+ *         schema: { type: string }
+ *         description: A topic to generate a string from.
+ *     responses:
+ *       200:
+ *         description: A random value.
+ *         content:
+ *           application/json:
+ *             schema: { type: object, properties: { result: { type: [string, integer] } } }
+ *       400:
+ *         description: Invalid parameters or missing type.
  */
-router.get('/random', randomController.getRandom.bind(randomController));
+router.get('/api/random', randomController.getRandom.bind(randomController));
 
 /**
  * @swagger
  * /api/random/user:
  *   get:
  *     summary: Get a random user
- *     description: Returns a realistic random user object.
+ *     description: Returns a realistic random user object. User details are retrieved from query parameters.
+ *     parameters:
+ *       - in: query
+ *         name: user
+ *         schema: { type: string }
+ *         description: A dummy parameter to indicate user info retrieval. The actual user is generated internally.
  *     responses:
  *       200:
  *         description: A random user object.
@@ -39,6 +82,9 @@ router.get('/random', randomController.getRandom.bind(randomController));
  */
 router.get('/api/random/user', (req, res) => {
     try {
+        // The 'user' query parameter is not actually used for filtering, 
+        // but its presence signifies the intent to get user data.
+        // The actual user is generated randomly.
         const user = userService.getRandomUser();
         res.json(user);
     } catch (error) {
