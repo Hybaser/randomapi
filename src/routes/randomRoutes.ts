@@ -37,7 +37,7 @@ router.get('/random', randomController.getRandom.bind(randomController));
  *                     city: { type: string }
  *                     country: { type: string }
  */
-router.get('/api/random/user', (req, res) => {
+router.get('/api/random?type=user', (req, res) => {
     try {
         const user = userService.getRandomUser();
         res.json(user);
