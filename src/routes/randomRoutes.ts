@@ -57,4 +57,25 @@ const router = Router();
  */
 router.get('/random', randomController.getRandom.bind(randomController));
 
+/**
+ * @swagger
+ * /api/time/utc:
+ *   get:
+ *     summary: Get current UTC time
+ *     description: Returns the current date and time in UTC format.
+ *     responses:
+ *       200:
+ *         description: Current UTC time
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 utc_time:
+ *                   type: string
+ *                   format: date-time
+ *                   description: The current UTC time.
+ */
+router.get('/time/utc', randomController.getUtcTime.bind(randomController));
+
 export default router;
