@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { randomService } from '../services/randomService';
+import { userService } from '../services/userService';
 import { z } from 'zod';
 
 // Define Zod schemas for validation
@@ -73,6 +74,8 @@ export class RandomController {
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
+
+    // No changes needed for getRandomUser in this controller as it's handled directly in routes
 }
 
 export const randomController = new RandomController();

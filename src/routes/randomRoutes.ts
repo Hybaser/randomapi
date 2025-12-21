@@ -1,60 +1,49 @@
 import { Router } from 'express';
 import { randomController } from '../controllers/randomController';
+import { userService } from '../services/userService';
 
 const router = Router();
 
 /**
  * @swagger
- * /api/random:
+ * /api/random: ... (rest of the file is unchanged)
+ */
+router.get('/random', randomController.getRandom.bind(randomController));
+
+/**
+ * @swagger
+ * /api/random/user:
  *   get:
- *     summary: Generate random values
- *     description: Generate random integers, GUIDs, strings, or topic-based strings based on query parameters
- *     parameters:
- *       - in: query
- *         name: type
- *         schema:
- *           type: string
- *           enum: [integer, guid, string]
- *         description: Type of random value to generate (optional if topic is provided)
- *       - in: query
- *         name: min
- *         schema:
- *           type: integer
- *         description: Minimum value for integer generation
- *       - in: query
- *         name: max
- *         schema:
- *           type: integer
- *         description: Maximum value for integer generation
- *       - in: query
- *         name: len
- *         schema:
- *           type: integer
- *         description: Length of random string
- *       - in: query
- *         name: special
- *         schema:
- *           type: boolean
- *         description: Include special characters in random string
- *       - in: query
- *         name: topic
- *         schema:
- *           type: string
- *         description: Topic to generate a related string for
+ *     summary: Get a random user
+ *     description: Returns a realistic random user object.
  *     responses:
  *       200:
- *         description: Successful generation
+ *         description: A random user object.
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 result:
- *                   type: string
- *                   description: The generated value (number or string)
- *       400:
- *         description: Bad request (invalid parameters)
+ *                 firstName: { type: string }
+ *                 lastName: { type: string }
+ *                 age: { type: integer }
+ *                 email: { type: string }
+ *                 address:
+ *                   type: object
+ *                   properties:
+ *                     street: { type: string }
+ *                     houseNumber: { type: integer }
+ *                     zipCode: { type: string }
+ *                     city: { type: string }
+ *                     country: { type: string }
  */
-router.get('/random', randomController.getRandom.bind(randomController));
+router.get('/api/random/user', (req, res) => {
+    try {
+        const user = userService.getRandomUser();
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
 export default router;

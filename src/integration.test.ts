@@ -49,4 +49,29 @@ describe('Random API Integration Tests', () => {
             expect(res.status).toBe(400);
         });
     });
+
+    describe('GET /api/random/user', () => {
+        it('should return a random user object', async () => {
+            const res = await request(app).get('/api/random/user');
+            expect(res.status).toBe(200);
+            expect(res.body).toHaveProperty('firstName');
+            expect(res.body).toHaveProperty('lastName');
+            expect(res.body).toHaveProperty('age');
+            expect(res.body).toHaveProperty('email');
+            expect(res.body.address).toHaveProperty('street');
+            expect(res.body.address).toHaveProperty('houseNumber');
+            expect(res.body.address).toHaveProperty('zipCode');
+            expect(res.body.address).toHaveProperty('city');
+            expect(res.body.address).toHaveProperty('country');
+            expect(typeof res.body.firstName).toBe('string');
+            expect(typeof res.body.lastName).toBe('string');
+            expect(typeof res.body.age).toBe('number');
+            expect(typeof res.body.email).toBe('string');
+            expect(typeof res.body.address.street).toBe('string');
+            expect(typeof res.body.address.houseNumber).toBe('number');
+            expect(typeof res.body.address.zipCode).toBe('string');
+            expect(typeof res.body.address.city).toBe('string');
+            expect(typeof res.body.address.country).toBe('string');
+        });
+    });
 });
