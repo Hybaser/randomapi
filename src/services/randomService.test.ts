@@ -94,4 +94,14 @@ describe('RandomService', () => {
             expect(result).not.toContain('No specific data for topic');
         });
     });
+
+    describe('getUtcTime', () => {
+        it('should return the current UTC time in ISO format', () => {
+            const result = service.getUtcTime();
+            // Basic check for ISO format, more robust checks could be added
+            expect(typeof result).toBe('string');
+            expect(() => new Date(result).toISOString()).not.toThrow();
+            expect(result.endsWith('Z')).toBe(true); // Indicates UTC
+        });
+    });
 });
