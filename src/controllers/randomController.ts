@@ -15,6 +15,10 @@ const stringSchema = z.object({
     type: z.literal('string'),
 });
 
+const characterSchema = z.object({
+    type: z.literal('character'),
+});
+
 const topicSchema = z.object({
     topic: z.string().min(1),
     type: z.literal('topic'), // Optional, but can be inferred if topic is present
@@ -54,9 +58,15 @@ export class RandomController {
                     res.json({ result });
                     return;
                 }
+                case 'character': {
+                    const params = characterSchema.parse({ type: 'character' });
+                    const result = randomService.generateRandomCharacter();
+                    res.json({ result });
+                    return;
+                }
                 default: {
                     res.status(400).json({
-                        error: 'Invalid or missing type parameter. Supported types: integer, guid, string. Or provide a topic parameter.'
+                        error: 'Invalid or missing type parameter. Supported types: integer, guid, string, character. Or provide a topic parameter.'
                     });
                     return;
                 }
