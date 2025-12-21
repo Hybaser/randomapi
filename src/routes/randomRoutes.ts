@@ -8,13 +8,13 @@ const router = Router();
  * /api/random:
  *   get:
  *     summary: Generate random values
- *     description: Generate random integers, GUIDs, strings, or topic-based strings based on query parameters
+ *     description: Generate random integers, GUIDs, strings, characters, or topic-based strings based on query parameters
  *     parameters:
  *       - in: query
  *         name: type
  *         schema:
  *           type: string
- *           enum: [integer, guid, string]
+ *           enum: [integer, guid, string, character]
  *         description: Type of random value to generate (optional if topic is provided)
  *       - in: query
  *         name: min

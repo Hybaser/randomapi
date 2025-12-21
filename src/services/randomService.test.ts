@@ -94,4 +94,18 @@ describe('RandomService', () => {
             expect(result).not.toContain('No specific data for topic');
         });
     });
+
+    describe('generateRandomCharacter', () => {
+        it('should return a single random character', () => {
+            const result = service.generateRandomCharacter();
+            expect(typeof result).toBe('string');
+            expect(result.length).toBe(1);
+        });
+
+        it('should return a character from the allowed set', () => {
+            const allowedChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
+            const result = service.generateRandomCharacter();
+            expect(allowedChars).toContain(result);
+        });
+    });
 });
