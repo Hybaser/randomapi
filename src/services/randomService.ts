@@ -69,6 +69,16 @@ export class RandomService {
 
         return `No specific data for topic '${topic}'. Random word: ` + this.generateString(8);
     }
+
+    /**
+     * Generates a single random character.
+     * @returns A single random character.
+     */
+    public generateRandomCharacter(): string {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
+        const randomIndex = Math.floor(Math.random() * chars.length);
+        return chars[randomIndex];
+    }
 }
 
 export const randomService = new RandomService();
