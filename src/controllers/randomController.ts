@@ -73,6 +73,15 @@ export class RandomController {
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }
+
+    public getUtcTime(req: Request, res: Response): void {
+        try {
+            const utcTime = new Date().toISOString();
+            res.json({ utc_time: utcTime });
+        } catch (error) {
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
 }
 
 export const randomController = new RandomController();
