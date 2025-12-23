@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random Number Generator API</title>
+    <title>Random Generator API</title>
     <style>
         * {
             margin: 0;
@@ -101,6 +101,12 @@
             color: #667eea;
             font-size: 48px;
             font-weight: bold;
+            word-break: break-all;
+            text-align: center;
+        }
+
+        .result-value.small {
+            font-size: 24px;
         }
 
         .error {
@@ -137,11 +143,14 @@
 </head>
 <body>
     <div class="container">
-        <h1>Random Number Generator</h1>
-        <p class="subtitle">Generate random integers with a single click</p>
+        <h1>Random Generator</h1>
+        <p class="subtitle">Generate random data with a single click</p>
 
         <div class="button-group">
-            <button id="generateBtn">Generate Random Integer</button>
+            <button id="generateIntegerBtn">Generate Random Integer</button>
+            <button id="generateGuidBtn">Generate Random GUID</button>
+            <button id="generateUserBtn">Generate Random User</button>
+            <button id="generateDestinationBtn">Generate Random Destination</button>
         </div>
 
         <div class="result-container">
@@ -157,18 +166,22 @@
     </div>
 
     <script>
-        const generateBtn = document.getElementById('generateBtn');
+        const generateIntegerBtn = document.getElementById('generateIntegerBtn');
+        const generateGuidBtn = document.getElementById('generateGuidBtn');
+        const generateUserBtn = document.getElementById('generateUserBtn');
+        const generateDestinationBtn = document.getElementById('generateDestinationBtn');
         const resultElement = document.getElementById('result');
         const errorElement = document.getElementById('error');
 
-        async function generateRandomInteger() {
+        async function generateRandom(type) {
             try {
-                generateBtn.disabled = true;
+                disableAllButtons();
                 resultElement.textContent = '...';
                 resultElement.classList.add('loading');
+                resultElement.classList.remove('small');
                 errorElement.style.display = 'none';
 
-                const response = await fetch('/api/random/integer');
+                const response = await fetch(`/api/random?type=${type}`);
                 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -176,20 +189,45 @@
                 
                 const data = await response.json();
                 
-                resultElement.textContent = data.value;
+                if (type === 'user') {
+                    resultElement.textContent = `${data.firstName} ${data.lastName}`;
+                    resultElement.classList.add('small');
+                } else {
+                    resultElement.textContent = data.result;
+                    if (type === 'guid') {
+                        resultElement.classList.add('small');
+                    }
+                }
                 resultElement.classList.remove('loading');
             } catch (error) {
-                console.error('Error generating random integer:', error);
+                console.error('Error generating random data:', error);
                 resultElement.textContent = '-';
                 resultElement.classList.remove('loading');
-                errorElement.textContent = 'Failed to generate random number. Please try again.';
+                errorElement.textContent = 'Failed to generate random data. Please try again.';
                 errorElement.style.display = 'block';
             } finally {
-                generateBtn.disabled = false;
+                enableAllButtons();
             }
         }
 
-        generateBtn.addEventListener('click', generateRandomInteger);
+        function disableAllButtons() {
+            generateIntegerBtn.disabled = true;
+            generateGuidBtn.disabled = true;
+            generateUserBtn.disabled = true;
+            generateDestinationBtn.disabled = true;
+        }
+
+        function enableAllButtons() {
+            generateIntegerBtn.disabled = false;
+            generateGuidBtn.disabled = false;
+            generateUserBtn.disabled = false;
+            generateDestinationBtn.disabled = false;
+        }
+
+        generateIntegerBtn.addEventListener('click', () => generateRandom('integer'));
+        generateGuidBtn.addEventListener('click', () => generateRandom('guid'));
+        generateUserBtn.addEventListener('click', () => generateRandom('user'));
+        generateDestinationBtn.addEventListener('click', () => generateRandom('destination'));
     </script>
 </body>
 </html>
