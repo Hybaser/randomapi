@@ -9,6 +9,19 @@ export class RandomService {
         nature: ['Forest', 'Ocean', 'Mountain', 'Desert', 'Rainforest', 'Savanna'],
     };
 
+    private readonly destinations: string[] = [
+        'Tokyo', 'Paris', 'New York', 'London', 'Dubai', 'Singapore', 'Barcelona', 'Rome', 'Istanbul', 'Bangkok',
+        'Amsterdam', 'Sydney', 'Hong Kong', 'Los Angeles', 'Berlin', 'Madrid', 'Toronto', 'Vienna', 'Prague', 'Lisbon',
+        'Dublin', 'Copenhagen', 'Stockholm', 'Oslo', 'Helsinki', 'Reykjavik', 'Athens', 'Budapest', 'Warsaw', 'Krakow',
+        'Moscow', 'St Petersburg', 'Beijing', 'Shanghai', 'Seoul', 'Osaka', 'Kyoto', 'Mumbai', 'Delhi', 'Bangalore',
+        'Cairo', 'Cape Town', 'Marrakech', 'Casablanca', 'Nairobi', 'Lagos', 'Accra', 'Johannesburg', 'Buenos Aires', 'Rio de Janeiro',
+        'São Paulo', 'Lima', 'Bogotá', 'Santiago', 'Mexico City', 'Cancun', 'Havana', 'San Juan', 'Vancouver', 'Montreal',
+        'Seattle', 'San Francisco', 'Las Vegas', 'Miami', 'Chicago', 'Boston', 'Washington DC', 'Philadelphia', 'Denver', 'Austin',
+        'Melbourne', 'Brisbane', 'Perth', 'Auckland', 'Wellington', 'Queenstown', 'Bali', 'Phuket', 'Hanoi', 'Ho Chi Minh City',
+        'Kuala Lumpur', 'Manila', 'Jakarta', 'Colombo', 'Kathmandu', 'Maldives', 'Seychelles', 'Mauritius', 'Santorini', 'Mykonos',
+        'Venice', 'Florence', 'Milan', 'Naples', 'Zurich', 'Geneva', 'Brussels', 'Bruges', 'Luxembourg', 'Monaco', 'Nice', 'Lyon'
+    ];
+
     /**
      * Generates a random integer between min and max (inclusive).
      * @param min Minimum value (default: 0)
@@ -68,6 +81,15 @@ export class RandomService {
         }
 
         return `No specific data for topic '${topic}'. Random word: ` + this.generateString(8);
+    }
+
+    /**
+     * Generates a random flight destination city name.
+     * @returns A random city name
+     */
+    public generateDestination(): string {
+        const randomIndex = Math.floor(Math.random() * this.destinations.length);
+        return this.destinations[randomIndex];
     }
 }
 
