@@ -94,4 +94,20 @@ describe('RandomService', () => {
             expect(result).not.toContain('No specific data for topic');
         });
     });
+
+    describe('generateDestination', () => {
+        it('should return a string city name', () => {
+            const result = service.generateDestination();
+            expect(typeof result).toBe('string');
+            expect(result.length).toBeGreaterThan(0);
+        });
+
+        it('should return different cities on multiple calls', () => {
+            const results = new Set();
+            for (let i = 0; i < 50; i++) {
+                results.add(service.generateDestination());
+            }
+            expect(results.size).toBeGreaterThan(1);
+        });
+    });
 });

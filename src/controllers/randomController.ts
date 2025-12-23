@@ -29,6 +29,10 @@ const userSchema = z.object({
     type: z.literal('user'),
 });
 
+const destinationSchema = z.object({
+    type: z.literal('destination'),
+});
+
 export class RandomController {
     public getRandom(req: Request, res: Response): void {
         try {
@@ -64,9 +68,14 @@ export class RandomController {
                     res.json(result);
                     return;
                 }
+                case 'destination': {
+                    const result = randomService.generateDestination();
+                    res.json({ result });
+                    return;
+                }
                 default: {
                     res.status(400).json({
-                        error: 'Invalid or missing type parameter. Supported types: integer, guid, string, user. Or provide a topic parameter.'
+                        error: 'Invalid or missing type parameter. Supported types: integer, guid, string, user, destination. Or provide a topic parameter.'
                     });
                     return;
                 }
