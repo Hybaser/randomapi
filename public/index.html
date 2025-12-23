@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Number Generator API</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-container {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .result-label {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .result-value {
+            color: #667eea;
+            font-size: 48px;
+            font-weight: bold;
+        }
+
+        .error {
+            color: #dc3545;
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .loading {
+            color: #666;
+            font-style: italic;
+        }
+
+        .api-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .api-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .api-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Random Number Generator</h1>
+        <p class="subtitle">Generate random integers with a single click</p>
+
+        <div class="button-group">
+            <button id="generateBtn">Generate Random Integer</button>
+        </div>
+
+        <div class="result-container">
+            <div class="result-label">Result:</div>
+            <div class="result-value" id="result">-</div>
+        </div>
+
+        <div id="error" class="error" style="display: none;"></div>
+
+        <div class="api-link">
+            <a href="/api-docs" target="_blank">View API Documentation</a>
+        </div>
+    </div>
+
+    <script>
+        const generateBtn = document.getElementById('generateBtn');
+        const resultElement = document.getElementById('result');
+        const errorElement = document.getElementById('error');
+
+        async function generateRandomInteger() {
+            try {
+                generateBtn.disabled = true;
+                resultElement.textContent = '...';
+                resultElement.classList.add('loading');
+                errorElement.style.display = 'none';
+
+                const response = await fetch('/api/random/integer');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                resultElement.textContent = data.value;
+                resultElement.classList.remove('loading');
+            } catch (error) {
+                console.error('Error generating random integer:', error);
+                resultElement.textContent = '-';
+                resultElement.classList.remove('loading');
+                errorElement.textContent = 'Failed to generate random number. Please try again.';
+                errorElement.style.display = 'block';
+            } finally {
+                generateBtn.disabled = false;
+            }
+        }
+
+        generateBtn.addEventListener('click', generateRandomInteger);
+    </script>
+</body>
+</html>
